@@ -1,4 +1,4 @@
-# MultiLayee Preceptron 
+# MultiLayer Preceptron 
 here is stuff about an MLP
 
 
@@ -15,11 +15,9 @@ Refactor
 - Create a model class 
 - Create a plot method -- to visualise the predictions
 - Create a Dataloader class (to be used for each model
-
-## TODO
-#### Refactor 
 - Remove training vairables from the run script
 
+## TODO
 #### Storing and Loging
 - Store the model as a result of training 
 - Store save the model whilst training 

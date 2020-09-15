@@ -1,0 +1,11 @@
+---
+model:
+    n-epochs: 1
+    batch-train: 32
+    batch-test: 1000
+    learning-rate: 0.0001
+    momentum: 0.2
+    log-interval: 100
+    batch-size: 32
+    random-seed: 1
+

@@ -9,18 +9,13 @@ import matplotlib.pyplot as plt
 from MLP import Net 
 from plot import plot
 from dataLoader import DataLoader
+from parameters import Parameters
 
 
-# Model Variables 
-n_epochs = 1
-batch_size_train = 32
-batch_size_test = 1000
-learning_rate = 0.0001
-momentum = 0.2
-log_interval = 100
-BATCH_SIZE = 32
-random_seed = 1
 
+# initialise model variables 
+modelParameters = Parameters('parameters.yml').getModelParams()
+print(modelParameters)
 
 # initialise dataloaders
 dataLoader = DataLoader()
@@ -36,15 +31,15 @@ plot(example_data, example_target, "MNIST dataset")
 
 # Run the model
 torch.backends.cudnn.enabled = False
-torch.manual_seed(random_seed)
+torch.manual_seed(modelParameters['random-seed'])
 
 network = Net()
-optimizer = torch.optim.SGD(network.parameters(), lr = learning_rate, momentum = momentum) 
+optimizer = torch.optim.SGD(network.parameters(), lr = modelParameters['learning-rate'], momentum = modelParameters['momentum']) 
 
 train_losses = []
 train_counter = []
 test_losses = []
-test_counter = [i*len(trainingLoader.dataset) for i in range(n_epochs + 1)]
+test_counter = [i*len(trainingLoader.dataset) for i in range(modelParameters['n-epochs'] + 1)]
 
 def train(epoch):
   network.train()
@@ -54,7 +49,7 @@ def train(epoch):
     loss = F.nll_loss(output, target)
     loss.backward()
     optimizer.step()
-    if batch_idx % log_interval == 0:
+    if batch_idx % modelParameters['log-interval'] == 0:
       print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
         epoch, batch_idx * len(data), len(trainingLoader.dataset),
         100. * batch_idx / len(trainingLoader), loss.item()))
@@ -79,7 +74,7 @@ def test():
     100. * correct / len(testLoader.dataset)))
 
 test()
-for epoch in range(1, n_epochs + 1):
+for epoch in range(1, modelParameters['n-epochs'] + 1):
   train(epoch)
   test()
 
@@ -96,6 +91,6 @@ plt.show()
 
 with torch.no_grad():
     output = network(example_data)
-    example_predictions = [output.data.max(1, keepdim=True)[1][i].item() for i in range(BATCH_SIZE)] 
+    example_predictions = [output.data.max(1, keepdim=True)[1][i].item() for i in range(modelParameters['batch-size'])] 
 
 plot(example_data, example_predictions, "MLP Predictions")
