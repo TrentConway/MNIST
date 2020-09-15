@@ -1,67 +1,40 @@
 #!/usr/bin/env python3
 
-import torch as torch
-import torchvision as torchvision
-import matplotlib.pyplot as plt
-from mlp import Net 
-
-# Model Variables 
-BATCH_SIZE = 32
-
-# Transform PIL Image to tensor
-transformation = torchvision.transforms.Compose([
-    torchvision.transforms.ToTensor()
-])
-
-# Training Loader 
-trainingData = torchvision.datasets.MNIST(
-    "../MNIST/TrainingData", 
-    train=True, 
-    transform=transformation, 
-    download=True)
-trainingLoader = torch.utils.data.DataLoader(
-    trainingData, 
-    batch_size=BATCH_SIZE, 
-    shuffle=True)
-
-# Test Loader
-testData = torchvision.datasets.MNIST(
-    "../MNIST/TestData", 
-    train=False, 
-    transform=transformation, 
-    download=True)
-testLoader = torch.utils.data.DataLoader(
-    testData, 
-    batch_size=BATCH_SIZE, 
-    shuffle=True)
-
-
-# Visualise the data
-examples = enumerate(testLoader)
-batch_idx, (example_data, example_target) = next(examples)
-
-fig = plt.figure()
-plt.suptitle('Visualise MNIST Dataset', fontsize=20)
-for i in range(BATCH_SIZE):
-    plt.subplot(4,8,i+1)
-    plt.title("val: {}".format(example_target[i]), fontsize=8)
-    plt.imshow(example_data[i][0], cmap='gray', interpolation='none')
-    plt.axis('off')
-plt.show()
-
-# Run the MLP 
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
+import torch as torch
+import torchvision as torchvision
+import matplotlib.pyplot as plt
+from MLP import Net 
+from plot import plot
+from dataLoader import DataLoader
 
-n_epochs = 16
+
+# Model Variables 
+n_epochs = 1
 batch_size_train = 32
 batch_size_test = 1000
 learning_rate = 0.0001
 momentum = 0.2
 log_interval = 100
-
+BATCH_SIZE = 32
 random_seed = 1
+
+
+# initialise dataloaders
+dataLoader = DataLoader()
+trainingLoader = dataLoader.trainingData()
+testLoader = dataLoader.testData()
+
+# Visualise the data
+examples = enumerate(testLoader)
+batch_idx, (example_data, example_target) = next(examples)
+
+plot(example_data, example_target, "MNIST dataset")
+
+
+# Run the model
 torch.backends.cudnn.enabled = False
 torch.manual_seed(random_seed)
 
@@ -110,6 +83,8 @@ for epoch in range(1, n_epochs + 1):
   train(epoch)
   test()
 
+
+# Visualise the Results
 fig = plt.figure()
 plt.plot(train_counter, train_losses, color='blue')
 plt.scatter(test_counter, test_losses, color='red')
@@ -120,14 +95,7 @@ plt.ylabel('negative log likelihood loss')
 plt.show()
 
 with torch.no_grad():
-  output = network(example_data)
+    output = network(example_data)
+    example_predictions = [output.data.max(1, keepdim=True)[1][i].item() for i in range(BATCH_SIZE)] 
 
-fig = plt.figure()
-plt.suptitle('Visualise Model Predictions', fontsize=20)
-for i in range(BATCH_SIZE):
-    plt.subplot(4,8,i+1)
-    plt.imshow(example_data[i][0], cmap='gray', interpolation='none')
-    plt.title("Val: {}".format(
-    output.data.max(1, keepdim=True)[1][i].item()), fontsize=8)
-    plt.axis('off')
-plt.show()
+plot(example_data, example_predictions, "MLP Predictions")
