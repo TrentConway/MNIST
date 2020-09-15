@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 
 import torch as torch
-import torchvision as torchvision
 import torch.optim as optim
-import torch as torch
 import matplotlib.pyplot as plt
 from MLP import Net 
 from plot import plot

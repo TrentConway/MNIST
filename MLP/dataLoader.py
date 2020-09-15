@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import torchvision as torchvision
 import torchvision.datasets as datasets
 import torchvision.transforms as transforms
