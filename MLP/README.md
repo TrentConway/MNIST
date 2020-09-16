@@ -17,6 +17,12 @@ Refactor
 - Create a Dataloader class (to be used for each model
 - Remove training vairables from the run script
 
+#### 16/09/2020
+- Setup pyTest
+- Wrote unit tests for parameters model
+
+
+
 ## TODO
 #### Storing and Loging
 - Store the model as a result of training 
@@ -25,5 +31,22 @@ Refactor
 - Create a nice model training configuration
 
 #### Testing
-- Setup pyTest
+
+## TODO
+#### Storing and Loging
+- Store the model as a result of training 
+- Store save the model whilst training 
+- Store the vairables of the model 
+- Create a nice model training configuration
+
+#### Testing
+
+## TODO
+#### Storing and Loging
+- Store the model as a result of training 
+- Store save the model whilst training 
+- Store the vairables of the model 
+- Create a nice model training configuration
+
+#### Testing
 - Write UnitTests for everything !
