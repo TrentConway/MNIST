@@ -11,7 +11,6 @@ from model import Model
 
 # initialise model variables 
 modelParameters = Parameters('parameters.yml').getModelParams()
-print(modelParameters)
 
 # initialise dataloaders
 dataLoader = DataLoader()
@@ -26,14 +25,18 @@ plot(example_data, example_target, "MNIST dataset")
 
 # Initialise the network & model
 network = Net()
+print(network)
 optimizer = torch.optim.SGD(network.parameters(), lr = modelParameters['learning-rate'], momentum = modelParameters['momentum']) 
 model = Model(network, optimizer, dataLoader, modelParameters)
 
 # train the network
+print("BASE LINE -- RANDOM WEIGHTS")
 model.test()
 for epoch in range(1, modelParameters['n-epochs'] + 1):
-  model.train(epoch)
-  model.test()
+    print("===================================")
+    print("\n EPOCH: {} \n".format(epoch))
+    model.train(epoch)
+    model.test()
 
 
 # Visualise the Learning Rate

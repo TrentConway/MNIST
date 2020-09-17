@@ -7,9 +7,9 @@ import torch.nn as nn
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
-        self.fc1= torch.nn.Linear(in_features = 784, out_features = 256) 
-        self.fc2= torch.nn.Linear(in_features = 256, out_features = 64) 
-        self.fc3= torch.nn.Linear(in_features = 64, out_features = 10) 
+        self.fc1 = torch.nn.Linear(in_features = 784, out_features = 64) 
+        self.fc2 = torch.nn.Linear(in_features = 64, out_features = 64) 
+        self.fc3 = torch.nn.Linear(in_features = 64, out_features = 10)
         self.relu = torch.nn.ReLU()        
         self.sigmoid = torch.nn.Sigmoid()
 
@@ -22,4 +22,3 @@ class Net(nn.Module):
         x = self.fc3(x)
         x = self.sigmoid(x)
         return x
- 

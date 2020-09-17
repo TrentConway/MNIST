@@ -3,7 +3,7 @@
 import torch as torch
 import torch.nn as nn
 import torch.nn.functional as F
-
+from tqdm import tqdm
 
 class Model():
     def __init__(self, network, optimizer, dataLoader, modelParameters):
@@ -23,22 +23,17 @@ class Model():
 
     def train(self, epoch):
         self.network.train()
-        for batch_idx, (data, target) in enumerate(self.trainingLoader):
+        for batch_idx, (data, target) in tqdm(enumerate(self.trainingLoader), total=len(self.trainingLoader), desc = "TRAINING"):
             self.optimizer.zero_grad()
             output = self.network(data)
             loss = F.nll_loss(output, target)
             loss.backward()
             self.optimizer.step()
             if batch_idx % self.modelParameters['log-interval'] == 0:
-                print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
-                    epoch, batch_idx * len(data), 
-                    len(self.trainingLoader.dataset),
-                    100. * batch_idx / len(self.trainingLoader), 
-                    loss.item())
-                )
                 self.train_losses.append(loss.item())
                 self.train_counter.append(
-                (batch_idx*64) + ((epoch-1)*len(self.trainingLoader.dataset)))
+                    (batch_idx*64) + ((epoch-1)*len(self.trainingLoader.dataset))
+                )
 
     def test(self):
         self.network.eval()
@@ -52,7 +47,7 @@ class Model():
                 correct += pred.eq(target.data.view_as(pred)).sum()
         test_loss /= len(self.testLoader.dataset)
         self.test_losses.append(test_loss)
-        print('\nTest set: Avg. loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
+        print('TEST: \nAvg. loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
             test_loss, 
             correct, 
             len(self.testLoader.dataset),

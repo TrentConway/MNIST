@@ -12,7 +12,10 @@ class DataLoader():
 
     def transformation(self):
         return transforms.Compose([
-            torchvision.transforms.ToTensor()
+            torchvision.transforms.ToTensor(),
+            torchvision.transforms.Normalize(
+                (0.1307,), (0.3081,)
+            )
         ])
 
     def trainingData(self):

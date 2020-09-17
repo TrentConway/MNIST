@@ -14,4 +14,7 @@ class Parameters():
             return yaml.load(file, Loader=yaml.FullLoader)
 
     def getModelParams(self):
-        return self.params['model']
+        try:
+            return self.params['model']
+        except KeyError:
+           raise KeyError("Yaml file does not contain model") 
