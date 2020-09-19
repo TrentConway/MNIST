@@ -1,6 +1,7 @@
 # MultiLayer Preceptron 
 here is stuff about an MLP
 
+##### NOTE -- ADD BP DERIVATION WITH NLL & LOG SOFTMAX VS SIG 
 
 ## Update Log
 #### 13/09/2020

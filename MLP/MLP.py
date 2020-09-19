@@ -2,6 +2,7 @@
 
 import torch as torch
 import torch.nn as nn
+import math
 
 # Create MLP network
 class Net(nn.Module):
@@ -11,7 +12,7 @@ class Net(nn.Module):
         self.fc2 = torch.nn.Linear(in_features = 64, out_features = 64) 
         self.fc3 = torch.nn.Linear(in_features = 64, out_features = 10)
         self.relu = torch.nn.ReLU()        
-        self.sigmoid = torch.nn.Sigmoid()
+        self.sigmoid = torch.nn.LogSoftmax()
 
     def forward(self,x):
         x = x.view(x.shape[0], -1)
