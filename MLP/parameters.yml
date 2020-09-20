@@ -1,6 +1,6 @@
 ---
 model:
-    n-epochs: 10
+    n-epochs: 25
     batch-train: 32
     batch-test: 1000
     learning-rate: 0.001

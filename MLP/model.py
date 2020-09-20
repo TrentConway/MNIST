@@ -42,7 +42,7 @@ class Model():
         with torch.no_grad():
             for data, target in self.testLoader:
                 output = self.network(data)
-                test_loss += F.nll_loss(output, target, size_average=False).item()
+                test_loss += F.nll_loss(output, target).item()
                 pred = output.data.max(1, keepdim=True)[1]
                 correct += pred.eq(target.data.view_as(pred)).sum()
         test_loss /= len(self.testLoader.dataset)
